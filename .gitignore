@@ -1,0 +1,42 @@
+# Execution files
+.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# OS
+.DS_Store
+*.swp
+*.swo
+*.swl
+*.swm
+*.swn
+*.pyc
+
+# IDE
+.idea
+*.iml
+.dir-locals.el
+.vscode
+
+# Build
+build
+dist
+bin
+
+# Testing
+coverage.out
+coverage.txt
+*profile.out
+*.out
+
+# Sqlite used for testing purpose only
+temp.db
+
+# Go workspace file
+go.work
+go.work.sum
+
+# Temporary files
+temp
