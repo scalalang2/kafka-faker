@@ -6,10 +6,10 @@ It's useful for a service that consumes messages from kafka, stream processing w
 ## Configuration
 ```yaml
 kafka:
-  brokers: [localhost:9092]
+  brokers: localhost:29092
 generators:
-  - topic: topic1
-    partitionKey: none
+  - topic: sample_topic
+    partitionKey: nil
     schema: |-
       {
         "from_address": "::ethereum_address()",
@@ -17,18 +17,28 @@ generators:
         "amount": "::number(1,10)",
         "timestamp": "::timestamp()"
       }
-    number: 100
+    number: 5
     loop: true
-    delay: 5s
+    delay: 2s
 ```
 
-## Run
+## Test
+First of all, you need to run kafka to test this app locally.
+Use docker-compose to run kafka and kafka-ui.
 ```shell
-$ kafka-faker -c config.yaml
+$ docker-compose up -d
 ```
 
-## Supported Types
-- JSON
+Then, run kafka-faker with the config file.
+
+```shell
+$ kafka-faker --config-file=config.yml
+```
+
+![Generated messages shows on kafka-ui](./images/result.png)
+
+[Visit kafka-ui](http://localhost:8080/) to see the generated messages.
+If you use docker-compose file. you can visit the kafka-ui at [http://localhost:8080/](http://localhost:8080/)
 
 ## LICENSE
 MIT
