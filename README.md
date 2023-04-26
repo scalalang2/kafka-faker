@@ -7,7 +7,7 @@ It's useful for a service that consumes messages from kafka, stream processing w
 ```yaml
 kafka:
   brokers: [localhost:9092]
-messages:
+generators:
   - topic: topic1
     partitionKey: none
     schema: |-

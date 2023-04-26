@@ -11,7 +11,7 @@ func TestDecodeConfig(t *testing.T) {
 	content := `
 kafka:
   brokers: [localhost:9092]
-messages:
+generators:
   - topic: topic1
     partitionKey: none
     schema: |-
@@ -30,7 +30,7 @@ messages:
 		Kafka: KafkaConfig{
 			Brokers: []string{"localhost:9092"},
 		},
-		Messages: []MessageConfig{
+		Generators: []GeneratorConfig{
 			{
 				Topic:        "topic1",
 				PartitionKey: "none",

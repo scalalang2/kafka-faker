@@ -2,46 +2,12 @@ package main
 
 import (
 	"encoding/json"
-	"errors"
 	"strings"
 
 	"gopkg.in/yaml.v3"
 )
 
-type Func struct {
-	Name string
-	Args []string
-}
-
-// Unmarshal parses the function from a string.
-func (f *Func) Unmarshal(txt string) error {
-	if !strings.HasPrefix(txt, "::") {
-		return errors.New("invalid function format")
-	}
-
-	if !strings.HasSuffix(txt, ")") {
-		return errors.New("invalid function format")
-	}
-
-	txt = txt[2:]
-	txt = txt[:len(txt)-1]
-	parts := strings.Split(txt, "(")
-	if len(parts) != 2 {
-		return errors.New("invalid function format")
-	}
-
-	f.Name = parts[0]
-	if len(parts) > 1 {
-		args := strings.Split(parts[1], ",")
-		for _, arg := range args {
-			if arg != "" {
-				f.Args = append(f.Args, strings.TrimSpace(arg))
-			}
-		}
-	}
-
-	return nil
-}
+type JSON map[string]interface{}
 
 // Schema represents JSON schema in the config file.
 type Schema map[string]interface{}
@@ -65,15 +31,38 @@ func (s *Schema) UnmarshalYAML(value *yaml.Node) error {
 		return err
 	}
 
-	if err := parseFunc((*map[string]interface{})(s)); err != nil {
+	if err := walkToParseFunc((*map[string]interface{})(s)); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-// parseFunc traverses the schema and replaces function strings with Func objects.
-func parseFunc(m *map[string]interface{}) error {
+func (s *Schema) GenerateJSON() JSON {
+	return walkToGenerateSchema((*map[string]interface{})(s))
+}
+
+func walkToGenerateSchema(m *map[string]interface{}) JSON {
+	kv := make(JSON)
+	for k, v := range *m {
+		switch typed := v.(type) {
+		case string:
+			kv[k] = typed
+		case int, int8, int16, int32, int64:
+			kv[k] = typed
+		case *Func:
+			kv[k] = typed.Generate()
+		case map[string]interface{}:
+			kv[k] = walkToGenerateSchema(&typed)
+		default:
+			kv[k] = typed
+		}
+	}
+	return kv
+}
+
+// walkToParseFunc traverses the schema and replaces function strings with Func objects.
+func walkToParseFunc(m *map[string]interface{}) error {
 	for k, v := range *m {
 		switch typed := v.(type) {
 		case string:
@@ -85,7 +74,7 @@ func parseFunc(m *map[string]interface{}) error {
 				(*m)[k] = f
 			}
 		case map[string]interface{}:
-			return parseFunc(&typed)
+			return walkToParseFunc(&typed)
 		}
 	}
 

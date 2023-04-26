@@ -8,15 +8,15 @@ import (
 )
 
 type Config struct {
-	Kafka    KafkaConfig     `yaml:"kafka"`
-	Messages []MessageConfig `yaml:"messages"`
+	Kafka      KafkaConfig       `yaml:"kafka"`
+	Generators []GeneratorConfig `yaml:"generators"`
 }
 
 type KafkaConfig struct {
-	Brokers []string `yaml:"brokers"`
+	Brokers string `yaml:"brokers"`
 }
 
-type MessageConfig struct {
+type GeneratorConfig struct {
 	Topic        string        `yaml:"topic"`
 	PartitionKey string        `yaml:"partitionKey"`
 	Schema       Schema        `yaml:"schema"`
