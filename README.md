@@ -29,10 +29,11 @@ Use docker-compose to run kafka and kafka-ui.
 $ docker-compose up -d
 ```
 
-Then, run kafka-faker with the config file.
+Then, build & run kafka-faker with the config file.
 
 ```shell
-$ kafka-faker --config-file=config.yml
+$ go build -o ./bin/kafka-faker .
+$ ./bin/kafka-faker --config-file=config.yml
 ```
 
 ![Generated messages shows on kafka-ui](./images/result.png)
