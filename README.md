@@ -6,16 +6,16 @@ It's useful for a service that consumes messages from kafka, stream processing w
 ## Configuration
 ```yaml
 kafka:
-  brokers: ["localhost:9092"]
+  brokers: [localhost:9092]
 messages:
-  - topic: "topic1"
+  - topic: topic1
     partitionKey: none
     schema: |-
       {
-        "from_address": "<ethereum_address>"
-        "to_address": "<ethereum_address>",
-        "amount": "<number>",
-        "timestamp": "<timestamp>",
+        "from_address": "::ethereum_address()",
+        "to_address": "::ethereum_address()",
+        "amount": "::number(1,10)",
+        "timestamp": "::timestamp()"
       }
     number: 100
     loop: true

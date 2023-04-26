@@ -25,6 +25,7 @@ type MessageConfig struct {
 	Delay        time.Duration `yaml:"delay"`
 }
 
+// LoadConfig read a config from a file
 func LoadConfig(filename string) (*Config, error) {
 	contents, err := os.ReadFile(filename)
 	if err != nil {
