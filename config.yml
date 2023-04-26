@@ -2,7 +2,7 @@ kafka:
   brokers: localhost:29092
 generators:
   - topic: sample_topic
-    partitionKey:
+    partitionKey: any
     template: |-
       {
         "name": "{{ personName }}",

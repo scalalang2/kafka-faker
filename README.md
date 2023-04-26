@@ -6,11 +6,11 @@ It's useful for a service that consumes messages from kafka, stream processing w
 ## Configuration
 ```yaml
 kafka:
-  brokers: localhost:9002
+  brokers: localhost:29092
 generators:
   - topic: sample_topic
-    partitionKey:
-    schema: |-
+    partitionKey: any
+    template: |-
       {
         "name": "{{ personName }}",
         "email": "{{ email }}",
