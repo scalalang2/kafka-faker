@@ -19,7 +19,7 @@ type KafkaConfig struct {
 type GeneratorConfig struct {
 	Topic        string        `yaml:"topic"`
 	PartitionKey string        `yaml:"partitionKey"`
-	Schema       Schema        `yaml:"schema"`
+	Template     Template      `yaml:"template"`
 	Number       int           `yaml:"number"`
 	Loop         bool          `yaml:"loop"`
 	Delay        time.Duration `yaml:"delay"`

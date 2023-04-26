@@ -1,14 +1,16 @@
 kafka:
-  brokers: localhost:29092
+  brokers: localhost:9002
 generators:
   - topic: sample_topic
-    partitionKey: nil
+    partitionKey:
     schema: |-
       {
-        "from_address": "::ethereum_address()",
-        "to_address": "::ethereum_address()",
-        "amount": "::number(1,10)",
-        "timestamp": "::timestamp()"
+        "name": "{{ personName }}",
+        "email": "{{ email }}",
+        "from_address": "{{ ethereumAddress }}",
+        "to_address": "{{ ethereumAddress }}",
+        "amount": "{{ intBetween 1 1000 }}",
+        "timestamp": "{{ timestamp }}"
       }
     number: 5
     loop: true

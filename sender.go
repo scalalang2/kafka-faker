@@ -70,6 +70,7 @@ func (s *Sender) Run(ctx context.Context) {
 			cnt++
 			if err := s.producer.Produce(&kafka.Message{
 				TopicPartition: kafka.TopicPartition{Topic: &msg.Topic, Partition: kafka.PartitionAny},
+				Key:            []byte(msg.Key),
 				Value:          []byte(msg.Value),
 			}, nil); err != nil {
 				log.Error("failed to send message to kafka", "error", err, "entry", msg)

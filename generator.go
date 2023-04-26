@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 
 	log "github.com/inconshreveable/log15"
 )
@@ -27,28 +26,16 @@ func (g *Generator) Run(ctx context.Context) {
 		default:
 			task := func() {
 				for i := 0; i < g.cfg.Number; i++ {
-					var key string
-					txt := g.cfg.Schema.GenerateJSON()
-
-					b, err := json.Marshal(txt)
+					parsed, err := ParseTemplate(g.cfg.Template)
 					if err != nil {
-						log.Error("failed to generate JSON from schema", "err", err)
-						panic("failed to generate JSON from schema")
-					}
-
-					if g.cfg.PartitionKey != "" && g.cfg.PartitionKey != "nil" {
-						var ok bool
-						key, ok = txt[g.cfg.PartitionKey].(string)
-						if !ok {
-							log.Error("partition key is not string", "key", g.cfg.PartitionKey)
-							panic("partition key is not string")
-						}
+						log.Error("failed to generate from template", "template", g.cfg.Template, "err", err)
+						continue
 					}
 
 					g.sender.Send(&Entry{
 						Topic: g.cfg.Topic,
-						Key:   key,
-						Value: string(b),
+						Key:   g.cfg.PartitionKey,
+						Value: parsed,
 					})
 				}
 			}
