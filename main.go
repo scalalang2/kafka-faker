@@ -14,9 +14,15 @@ var wg sync.WaitGroup
 
 func main() {
 	fs := flag.NewFlagSet("", flag.ExitOnError)
-	fs.StringVar(&configFile, "config-file", "config.yaml", "config file for kafka-faker")
+	fs.StringVar(&configFile, "config-file", "", "config file path (e.g. config.yml)")
 	if err := fs.Parse(os.Args[1:]); err != nil {
 		log.Error("error parsing flags", "err", err)
+		return
+	}
+
+	if configFile == "" {
+		log.Info("--config-file is required")
+		fs.Usage()
 		return
 	}
 
