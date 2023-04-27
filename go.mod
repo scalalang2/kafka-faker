@@ -1,4 +1,4 @@
-module kafka-faker
+module github.com/scalalang2/kafka-faker
 
 go 1.20
 
